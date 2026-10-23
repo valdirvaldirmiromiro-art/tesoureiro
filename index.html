@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0d12">
+<title>MEU TESOUREIRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"></head>
+<body class="splash-active">
+
+<!-- ══════════════════════════════════════════════
+     ECRÃ: LOADING
+     ══════════════════════════════════════════════ -->
+<div class="splash" id="splash">
+  <div class="splash-content">
+    <svg class="splash-logo" viewBox="0 0 240 260" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 100 20 L 130 20 L 75 165 L 45 165 Z" fill="#ffffff"/>
+      <path d="M 130 110 L 160 110 L 115 210 L 85 210 Z" fill="#ffffff"/>
+      <path d="M 150 95 Q 175 80 200 95 L 190 108 Q 175 98 160 108 Z" fill="#ffffff"/>
+      <path d="M 175 130 L 205 130 L 190 160 L 160 160 Z" fill="#ffffff"/>
+    </svg>
+    <h1 class="splash-name">IMEP</h1>
+    <p class="splash-tag">Soluções Digitais</p>
+    <div class="splash-loader"><div class="splash-loader-bar"></div></div>
+  </div>
+  <div class="splash-footer">MEU TESOUREIRO · v1.0-2026</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     ECRÃ: PRIMEIRO ARRANQUE
+     ══════════════════════════════════════════════ -->
+<div class="screen-full" id="screen-primeiro-arranque" style="display:none">
+  <div class="auth-card">
+    <div class="auth-logo">🔐</div>
+    <h2 class="auth-title">Bem-vindo!</h2>
+    <p class="auth-sub">Vamos configurar a sua conta.<br>Preencha os dados abaixo:</p>
+
+    <label class="auth-label">O seu nome completo</label>
+    <input type="text" id="inp-nome-cliente" class="auth-input" placeholder="Ex: João Silva" autocomplete="off">
+
+    <label class="auth-label">Crie uma senha (mínimo 4 dígitos)</label>
+    <input type="tel" id="inp-senha-nova" class="auth-input" placeholder="Ex: 1234" inputmode="numeric" maxlength="8" autocomplete="off">
+
+    <label class="auth-label">Confirme a senha</label>
+    <input type="tel" id="inp-senha-confirma" class="auth-input" placeholder="Repita a senha" inputmode="numeric" maxlength="8" autocomplete="off">
+
+    <button class="auth-btn" onclick="registarCliente()">
+      COMEÇAR A USAR
+    </button>
+
+    <p class="auth-footer">O seu período de uso será de <b>6 meses</b>.</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     ECRÃ: SENHA (aberturas seguintes)
+     ══════════════════════════════════════════════ -->
+<div class="screen-full" id="screen-senha" style="display:none">
+  <div class="auth-card">
+    <div class="auth-logo">👋</div>
+    <h2 class="auth-title">Bem-vindo,</h2>
+    <p class="auth-name" id="nome-cliente-boas-vindas">—</p>
+
+    <label class="auth-label">Digite a sua senha</label>
+    <input type="tel" id="inp-senha-login" class="auth-input auth-input-center" placeholder="••••" inputmode="numeric" maxlength="12" autocomplete="off">
+
+    <button class="auth-btn" onclick="verificarSenhaLogin()">
+      ENTRAR
+    </button>
+
+    <p class="auth-footer" id="dias-restantes-login">—</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     ECRÃ: ALTERAR SENHA (após master password)
+     ══════════════════════════════════════════════ -->
+<div class="screen-full" id="screen-alterar-senha" style="display:none">
+  <div class="auth-card auth-card-danger">
+    <div class="auth-logo auth-logo-danger">🔓</div>
+    <h2 class="auth-title auth-title-danger">ACESSO DE EMERGÊNCIA</h2>
+    <p class="auth-sub">
+      A senha antiga foi <b>apagada</b>.<br>
+      Defina uma <b>nova senha</b> para o cliente:
+    </p>
+
+    <label class="auth-label">Nova senha (mínimo 4 dígitos)</label>
+    <input type="tel" id="inp-senha-master-nova" class="auth-input auth-input-center" placeholder="••••" inputmode="numeric" maxlength="8" autocomplete="off">
+
+    <label class="auth-label">Confirme a nova senha</label>
+    <input type="tel" id="inp-senha-master-confirma" class="auth-input auth-input-center" placeholder="••••" inputmode="numeric" maxlength="8" autocomplete="off">
+
+    <button class="auth-btn auth-btn-danger" onclick="guardarNovaSenhaMaster()">
+      GUARDAR NOVA SENHA
+    </button>
+
+    <p class="auth-footer auth-footer-danger">
+      ⚠️ Aviso: o cliente vai precisar desta nova senha a partir de agora.
+    </p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     ECRÃ: LICENÇA EXPIRADA
+     ══════════════════════════════════════════════ -->
+<div class="screen-full" id="screen-expirada" style="display:none">
+  <div class="auth-card auth-card-warn">
+    <div class="auth-logo auth-logo-warn">⚠️</div>
+    <h2 class="auth-title" id="titulo-licenca">Licença Expirada</h2>
+    <p class="auth-sub">
+      <span id="texto-licenca-expirada">O seu período de uso terminou a</span><br>
+      <b id="data-expiracao-txt">—</b>
+    </p>
+
+    <div class="exp-info">
+      <p class="exp-info-title">Para renovar, contacte:</p>
+      <a class="exp-contact" href="https://wa.me/244946359471" target="_blank">
+        <span class="exp-contact-icon">💬</span>
+        <div class="exp-contact-info">
+          <span>WhatsApp</span>
+          <b>946 359 471</b>
+        </div>
+      </a>
+      <a class="exp-contact" href="mailto:edvaniogrosso12@gmail.com">
+        <span class="exp-contact-icon">📧</span>
+        <div class="exp-contact-info">
+          <span>Email</span>
+          <b>edvaniogrosso12@gmail.com</b>
+        </div>
+      </a>
+    </div>
+
+    <div class="exp-id">
+      <p class="exp-id-label">Código do dispositivo:</p>
+      <p class="exp-id-value" id="android-id-txt">—</p>
+      <p class="exp-id-hint">Envie este código ao fabricante.</p>
+    </div>
+
+    <label class="auth-label" for="inp-assinatura-criador">ASSINATURA DO CRIADOR</label>
+    <input type="text" id="inp-assinatura-criador" class="auth-input auth-input-center" placeholder="Introduza a assinatura fornecida pelo criador" autocomplete="off" autocapitalize="characters" maxlength="64" spellcheck="false">
+
+    <label class="auth-label" for="inp-codigo-licenca">Código de ativação / renovação</label>
+    <input type="text" id="inp-codigo-licenca" class="auth-input auth-input-center" placeholder="XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" maxlength="14">
+    <button class="auth-btn auth-btn-warn" onclick="aplicarCodigoLicenca()">
+      🔑 ATIVAR LICENÇA
+    </button>
+
+    <div id="renovacao-resultado" style="display:none; margin-top:16px;"></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     ECRÃ: DISPOSITIVO ERRADO
+     ══════════════════════════════════════════════ -->
+<div class="screen-full" id="screen-dispositivo-errado" style="display:none">
+  <div class="auth-card auth-card-error">
+    <div class="auth-logo auth-logo-error">🚫</div>
+    <h2 class="auth-title">Dispositivo Não Autorizado</h2>
+    <p class="auth-sub">
+      Esta licença está registada para outro dispositivo.<br>
+      Por motivos de segurança, a aplicação está bloqueada.
+    </p>
+    <p class="auth-sub">
+      Contacte o fabricante:<br>
+      <b>946 359 471</b>
+    </p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     APP PRINCIPAL
+     ══════════════════════════════════════════════ -->
+<div class="app" id="app" style="display:none">
+
+  <header class="topbar" id="globalTopbar">
+    <button class="back-btn" id="backBtn" onclick="goBack()" style="display:none">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="brand" id="topbarTitle"><span class="dot-live"></span>Meu Tesoureiro</div>
+    <button class="license-btn" id="licenseBtn" onclick="toggleLicense(event)">
+      <svg class="clock-svg" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"/>
+        <polyline points="12 7 12 12 15 14"/>
+      </svg>
+      <span id="licenseDays">180d</span>
+    </button>
+  </header>
+
+  <div class="license-popover" id="licensePopover" onclick="event.stopPropagation()">
+    <div class="lic-header">
+      <div class="icon">
+        <svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+      </div>
+      <div>
+        <h4>Licença ativa</h4>
+        <small>Plano semestral</small>
+      </div>
+    </div>
+    <div class="lic-days">
+      <div class="num" id="popDays">180</div>
+      <div class="lbl">dias<br>restantes</div>
+    </div>
+    <div class="lic-bar"><div class="lic-bar-fill" id="licBar"></div></div>
+    <div class="lic-contact">
+      <h5>Contacto para renovação</h5>
+      <a class="contact-item" href="https://wa.me/244946359471" target="_blank">
+        <div class="ci"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+        <div class="ct">WhatsApp<span class="cs">946 359 471</span></div>
+      </a>
+      <a class="contact-item" href="mailto:edvaniogrosso12@gmail.com">
+        <div class="ci"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg></div>
+        <div class="ct">E-mail<span class="cs">edvaniogrosso12@gmail.com</span></div>
+      </a>
+    </div>
+  </div>
+  <div class="overlay" id="overlay" onclick="fecharLicense()"></div>
+
+  <!-- ECRÃ: INÍCIO -->
+  <section class="screen active" id="screen-home">
+    <div class="balance-card">
+      <div class="balance-label">● RECEBIDO TOTAL</div>
+      <div class="balance-value" id="balance">
+        <span id="balance-num">0</span><span class="kz">Kz</span>
+      </div>
+      <div class="balance-meta"><span class="up" id="metaPeriodo">· —</span></div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><small>Membros</small><strong id="stat-alunos">0</strong></div>
+      <div class="stat pend"><small>Pendentes</small><strong id="stat-pendentes">0</strong></div>
+      <div class="stat"><small>Quota</small><strong id="stat-quota">300 Kz</strong></div>
+    </div>
+
+    <button class="deve-btn" onclick="abrirQuemDeve()">
+      <div class="deve-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="deve-content">
+        <span class="deve-title">Quem está a dever</span>
+        <span class="deve-sub" id="deveResumo">A carregar...</span>
+      </div>
+      <svg class="deve-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <div class="section-title">Acesso rápido</div>
+
+    <div class="modules">
+      <button class="module" data-nav="alunos">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="label">MEMBROS</span>
+      </button>
+      <button class="module hi" data-nav="pagamentos">
+        <span class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 10v4M18 10v4"/></svg></span>
+        <span class="label">PAGAMENTOS</span>
+      </button>
+      <button class="module" data-nav="atividades">
+        <span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="16" r="1.5" fill="currentColor" stroke="none"/></svg></span>
+        <span class="label">ATIVIDADES</span>
+      </button>
+      <button class="module" data-nav="historico">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.36 2.64L3 8"/><polyline points="3 3 3 8 8 8"/><polyline points="12 7 12 12 16 14"/></svg></span>
+        <span class="label">HISTÓRICO</span>
+      </button>
+      <button class="module" data-nav="relatorios">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>
+        <span class="label">RELATÓRIOS</span>
+      </button>
+      <button class="module" data-nav="notas">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg></span>
+        <span class="label">NOTAS</span>
+      </button>
+      <button class="module span-2" data-nav="config">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+        <span class="label">CONFIGURAÇÕES</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ECRÃ: MEMBROS -->
+  <section class="screen" id="screen-alunos">
+    <div class="screen-title">
+      <h2>Membros</h2>
+      <p><span id="alunosCount">0</span> registados</p>
+    </div>
+    <button class="deve-mini-btn" onclick="abrirQuemDeve()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Ver quem está a dever
+    </button>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-aluno" placeholder="Pesquisar membro por nome...">
+    </div>
+    <div class="list" id="lista-alunos"></div>
+    <button class="btn-primary sticky" onclick="openModalAluno()">
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      ADICIONAR MEMBRO
+    </button>
+  </section>
+
+  <!-- ECRÃ: PAGAMENTOS -->
+  <section class="screen" id="screen-pagamentos">
+    <div class="screen-title">
+      <h2>Pagamentos</h2>
+      <p>Registar quota mensal</p>
+    </div>
+    <button class="deve-mini-btn" onclick="abrirQuemDeve()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Ver quem está a dever
+    </button>
+    <div class="form-card">
+      <label>Membro</label>
+      <div class="search-box">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-pag-aluno" placeholder="Pesquisar membro...">
+      </div>
+      <div class="mini-list" id="sugestoes-pagamento"></div>
+
+      <label>Data do pagamento</label>
+      <button class="input-fake" id="pag-data" onclick="openDatePicker('pag-data')">
+        <span class="if-text">Selecionar data</span>
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      </button>
+
+      <label>Valor recebido (Kz)</label>
+      <input type="number" id="pag-valor" placeholder="Ex: 300" oninput="previewMeses()">
+
+      <div class="quota-hint">
+        Quota atual: <b id="quota-atual-hint">300 Kz</b> · <span id="preview-meses">0 meses</span>
+      </div>
+
+      <button class="btn-primary" onclick="registarPagamento(event)">
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round"><polyline points="20 6 9 17 4 12"/></svg>
+        REGISTAR PAGAMENTO
+      </button>
+    </div>
+  </section>
+
+  <!-- ECRÃ: HISTÓRICO -->
+  <section class="screen" id="screen-historico">
+    <div class="screen-title">
+      <h2>Histórico</h2>
+      <p>Consultar pagamentos</p>
+    </div>
+    <button class="deve-mini-btn" onclick="abrirQuemDeve()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Ver quem está a dever
+    </button>
+    <div class="tabs">
+      <button class="tab active" data-htab="pessoa">Por pessoa</button>
+      <button class="tab" data-htab="todos">Todos</button>
+    </div>
+    <div id="hist-pessoa">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-hist" placeholder="Pesquisar membro...">
+      </div>
+      <div class="mini-list" id="sugestoes-hist"></div>
+      <div id="hist-detalhe"></div>
+    </div>
+    <div id="hist-todos" style="display:none"></div>
+  </section>
+
+  <!-- ECRÃ: RELATÓRIOS -->
+  <section class="screen" id="screen-relatorios">
+    <div class="screen-title">
+      <h2>Relatórios</h2>
+      <p>Exportar em PDF A4 horizontal</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-rtab="individual">Individual</button>
+      <button class="tab" data-rtab="geral">Geral</button>
+    </div>
+    <div class="form-card">
+      <div id="rel-individual-fields">
+        <label>Membro</label>
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="search-rel" placeholder="Pesquisar membro...">
+        </div>
+        <div class="mini-list" id="sugestoes-rel"></div>
+      </div>
+      <label>Ano</label>
+      <select id="rel-ano" class="input-fake"></select>
+      <button class="btn-primary" onclick="gerarRelatorio()">
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+        GERAR PRÉ-VISUALIZAÇÃO
+      </button>
+    </div>
+    <div id="rel-preview"></div>
+    <button class="btn-ghost" onclick="exportarPDF()">
+      <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;vertical-align:middle"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      EXPORTAR PDF (A4 horizontal)
+    </button>
+  </section>
+
+  <!-- ECRÃ: ATIVIDADES -->
+  <section class="screen" id="screen-atividades">
+    <div class="screen-title">
+      <h2>Atividades</h2>
+      <p>Cobranças especiais do grupo</p>
+    </div>
+    <div class="form-card">
+      <label>Nome da atividade</label>
+      <input type="text" id="ativ-nome" placeholder="Ex: Pagamento de tshirt">
+      <label>Valor fixo (Kz)</label>
+      <input type="number" id="ativ-valor" placeholder="Ex: 5000">
+      <button class="btn-primary" onclick="criarAtividade()">
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        CRIAR ATIVIDADE
+      </button>
+    </div>
+    <div id="lista-atividades"></div>
+  </section>
+
+  <!-- ECRÃ: NOTAS -->
+  <section class="screen" id="screen-notas">
+    <div class="screen-title">
+      <h2>Bloco de Notas</h2>
+      <p>Lembretes internos</p>
+    </div>
+    <div class="form-card">
+      <textarea id="nota-texto" rows="5" placeholder="Escreve aqui a tua nota..."></textarea>
+      <button class="btn-primary" onclick="guardarNota()">
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        GUARDAR NOTA
+      </button>
+    </div>
+    <div id="lista-notas"></div>
+  </section>
+
+  <!-- ECRÃ: CONFIGURAÇÕES -->
+  <section class="screen" id="screen-config">
+    <div class="screen-title">
+      <h2>Configurações</h2>
+      <p>Parâmetros do sistema</p>
+    </div>
+    <div class="form-card">
+      <label>Quota mensal (Kz)</label>
+      <input type="number" id="cfg-quota" value="300">
+      <button class="btn-primary" onclick="guardarQuota()">GUARDAR QUOTA</button>
+
+      <label style="margin-top:22px">Cor principal</label>
+      <div class="color-row">
+        <button class="color-dot" style="background:#58cc02" onclick="setAccent('#58cc02','#7dff29','#4aa802')" title="Verde Duolingo"></button>
+        <button class="color-dot" style="background:#1db954" onclick="setAccent('#1db954','#4ade80','#15803d')" title="Verde Spotify"></button>
+        <button class="color-dot" style="background:#3b82f6" onclick="setAccent('#3b82f6','#60a5fa','#1d4ed8')" title="Azul"></button>
+        <button class="color-dot" style="background:#8b5cf6" onclick="setAccent('#8b5cf6','#a78bfa','#6d28d9')" title="Roxo"></button>
+        <button class="color-dot" style="background:#f59e0b" onclick="setAccent('#f59e0b','#fbbf24','#d97706')" title="Laranja"></button>
+      </div>
+
+      <label style="margin-top:22px">Backup</label>
+      <button class="btn-ghost" onclick="criarBackup()">
+        <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;vertical-align:middle"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        CRIAR BACKUP
+      </button>
+
+      <label style="margin-top:22px">Sobre</label>
+      <div class="about-box">
+        <p><b>MEU TESOUREIRO</b></p>
+        <p>v1.0-2026</p>
+        <p class="muted">Gestão de tesouraria de grupo</p>
+        <div class="about-divider"></div>
+        <p class="muted-label">Criador</p>
+        <p class="about-strong">IMEP — Soluções digitais</p>
+        <p class="muted-label" style="margin-top:10px">Contacto</p>
+        <a class="about-contact" href="mailto:edvaniogrosso12@gmail.com">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+          edvaniogrosso12@gmail.com
+        </a>
+        <a class="about-contact" href="tel:+244946359471">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          946 359 471
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- MODAL ALUNO -->
+<div class="modal" id="modal-aluno">
+  <div class="modal-content">
+    <div class="modal-handle"></div>
+    <h3 id="modal-aluno-title">Novo Membro</h3>
+    <label>Nome completo</label>
+    <input type="text" id="aluno-nome" placeholder="Ex: João Silva">
+    <label>Data de entrada</label>
+    <button class="input-fake" id="aluno-data" onclick="openDatePicker('aluno-data')">
+      <span class="if-text">Selecionar data</span>
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    </button>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModalAluno()">Cancelar</button>
+      <button class="btn-primary" onclick="guardarAluno()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DATE PICKER -->
+<div class="modal" id="modal-date">
+  <div class="modal-content date-picker">
+    <div class="modal-handle"></div>
+    <h3>Selecionar data</h3>
+    <div class="date-cols">
+      <div><h4>Dia</h4><div class="date-scroll" id="dp-days"></div></div>
+      <div><h4>Mês</h4><div class="date-scroll" id="dp-months"></div></div>
+      <div><h4>Ano</h4><div class="date-scroll" id="dp-years"></div></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeDatePicker()">Cancelar</button>
+      <button class="btn-primary" onclick="confirmDatePicker()">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-check">✓</span>
+  <span id="toast-msg">Feito!</span>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
